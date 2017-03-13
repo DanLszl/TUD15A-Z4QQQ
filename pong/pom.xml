@@ -43,7 +43,7 @@
 				<artifactId>maven-nativedependencies-plugin</artifactId>
 				<version>0.0.7</version>
 				<configuration>
-					<nativesTargetDir>target/natives</nativesTargetDir>
+					<nativesTargetDir>target/libs</nativesTargetDir>
 					<separateDirs>false</separateDirs>
 				</configuration>
 				<executions>
