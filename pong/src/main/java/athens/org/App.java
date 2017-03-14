@@ -1,24 +1,28 @@
 package athens.org;
 
 import org.lwjgl.input.Keyboard;
+import athens.org.states.WelcomeState;
 import org.newdawn.slick.*;
+import org.newdawn.slick.state.StateBasedGame;
 
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * App
  */
-public class App extends BasicGame {
+public class App extends StateBasedGame
+{
     private Paddle paddleLeft;
     private Paddle paddleRight;
-
-    private Input input;
-
-    private App(String gamename) {
+    
+    public App(String gamename)
+    {
         super(gamename);
     }
-
+    
+    private Input input;
 
     @Override
     public void init(GameContainer gc) throws SlickException {
@@ -61,11 +65,19 @@ public class App extends BasicGame {
         g.fill(paddleRight);
     }
 
-    public static void main(String[] args) {
-        try {
+    @Override
+    public void initStatesList(GameContainer gameContainer) throws SlickException {
+        this.addState(new WelcomeState());
+    }
+
+    public static void main(String[] args)
+    {
+
+        try
+        {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new App("Simple Slick Game"));
-            appgc.setDisplayMode(640, 480, false);
+            appgc.setDisplayMode(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
             appgc.start();
         } catch (SlickException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
