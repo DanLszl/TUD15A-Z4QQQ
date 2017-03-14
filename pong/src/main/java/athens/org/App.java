@@ -1,6 +1,7 @@
 package athens.org;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Vector2f;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,21 +12,30 @@ import java.util.logging.Logger;
  */
 public class App extends BasicGame
 {
+
+    Ball ball;
+
     public App(String gamename)
     {
         super(gamename);
     }
 
     @Override
-    public void init(GameContainer gc) throws SlickException {}
+    public void init(GameContainer gc) throws SlickException {
+        ball = new Ball(320, 240, Ball.DIRECTION.RIGHT);
+    }
 
     @Override
-    public void update(GameContainer gc, int i) throws SlickException {}
+    public void update(GameContainer gc, int delta) throws SlickException {
+        float seconds = delta / 1000f;
+        Vector2f distance = new Vector2f(ball.getSpeed().x * seconds, ball.getSpeed().y * seconds);
+        ball.translate(distance);
+    }
 
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
-        g.drawString("Howdy!", 10, 10);
+        g.draw(ball);
     }
 
     public static void main(String[] args)
