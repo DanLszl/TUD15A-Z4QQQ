@@ -1,5 +1,6 @@
 package athens.org;
 
+import athens.org.states.GameOverState;
 import athens.org.states.PlayingState;
 import org.lwjgl.input.Keyboard;
 import athens.org.states.WelcomeState;
@@ -23,6 +24,7 @@ public class App extends StateBasedGame
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new WelcomeState());
         this.addState(new PlayingState());
+        this.addState(new GameOverState());
     }
 
     public static void main(String[] args) throws SlickException
