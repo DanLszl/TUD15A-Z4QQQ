@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  */
 public class App extends BasicGame {
     private Paddle paddleLeft;
-
+    private GameBorder border;
     private Input input;
 
     private App(String gamename) {
@@ -22,6 +22,8 @@ public class App extends BasicGame {
     @Override
     public void init(GameContainer gc) throws SlickException {
         paddleLeft = new Paddle(0.5);
+        //TODO change hardcoded screen size
+        border = new GameBorder(640f, 480f);
 
         input = gc.getInput();
     }
@@ -30,10 +32,11 @@ public class App extends BasicGame {
     public void update(GameContainer gc, int delta) throws SlickException {
         int speed = 100;
         float distance = speed * delta / 1000f;
-        if (input.isKeyDown(Keyboard.KEY_UP)) {
-            moveLeftPaddleUp(distance);
+        if (input.isKeyDown(Keyboard.KEY_UP) & !border.intersectUpper(paddleLeft)) {
+                moveLeftPaddleUp(distance);
         }
-        if (input.isKeyDown(Keyboard.KEY_DOWN)) {
+
+        if (input.isKeyDown(Keyboard.KEY_DOWN) & !border.intersectLower(paddleLeft)) {
             moveLeftPaddleDown(distance);
         }
     }
