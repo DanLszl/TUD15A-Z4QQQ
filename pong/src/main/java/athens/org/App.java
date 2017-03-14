@@ -57,8 +57,8 @@ public class App extends BasicGame {
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
         // TODO Write score on the screen
-        g.draw(paddleLeft);
-        g.draw(paddleRight);
+        g.fill(paddleLeft);
+        g.fill(paddleRight);
     }
 
     public static void main(String[] args) {
