@@ -16,7 +16,9 @@ public class App extends StateBasedGame
 {
     private Paddle paddleLeft;
     private Paddle paddleRight;
-    
+
+    Ball ball;
+
     public App(String gamename)
     {
         super(gamename);
