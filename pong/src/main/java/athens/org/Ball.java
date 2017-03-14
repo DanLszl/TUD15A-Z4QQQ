@@ -1,6 +1,7 @@
 package athens.org;
 
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -12,13 +13,29 @@ import static athens.org.Ball.DIRECTION.LEFT;
  */
 public class Ball extends Circle {
 
+    private Shape lastHit;
+
     public Vector2f getSpeed() {
         return speed;
     }
 
-    public void translate(Vector2f distance) {
+    public void translate(float seconds) {
+        Vector2f distance = new Vector2f(speed.x * seconds, speed.y * seconds);
         setCenterX(getCenterX() + distance.getX());
         setCenterY(getCenterY() + distance.getY());
+    }
+
+    public void bounce(Vector2f normal, Shape shape) {
+        if (lastHit == null || !lastHit.equals(shape)) {
+            if (normal.x != 0) {
+                speed.set(-speed.getX(), speed.getY());
+            }
+            if (normal.y != 0) {
+                speed.set(speed.getX(), -speed.getY());
+            }
+            lastHit = shape;
+        }
+
     }
 
     public enum DIRECTION {
@@ -40,6 +57,8 @@ public class Ball extends Circle {
         } else {
             angle = randomGenerator.nextInt(180) - 90;
         }
+        // TODO delete this
+        angle = 90;
         speed = new Vector2f((float) Math.cos(Math.toRadians(angle)) * speedLength, (float) Math.sin(Math.toRadians(angle)) * speedLength);
     }
 }
