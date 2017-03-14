@@ -1,5 +1,6 @@
 package athens.org;
 
+import athens.org.states.PlayingState;
 import athens.org.states.WelcomeState;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
@@ -20,25 +21,21 @@ public class App extends StateBasedGame
     }
 
 
+
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new WelcomeState());
+        this.addState(new PlayingState());
     }
 
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws SlickException
     {
+        AppGameContainer appgc=new AppGameContainer(new App("PONG"));
+        appgc.setDisplayMode(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
+        appgc.setShowFPS(false);
+        appgc.setForceExit(false);
+        appgc.start();
 
-        try
-        {
-            AppGameContainer appgc;
-            appgc = new AppGameContainer(new App("Simple Slick Game"));
-            appgc.setDisplayMode(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
-            appgc.start();
-        }
-        catch (SlickException ex)
-        {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }
