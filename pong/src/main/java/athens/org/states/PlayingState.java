@@ -8,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -39,6 +40,7 @@ public class PlayingState extends BasicGameState {
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         paddleLeft = new Paddle(50f);
         paddleRight = new Paddle(590f);
+        ball = new Ball(480, 240, Ball.DIRECTION.LEFT);
 
         //TODO change hardcoded screen size
         border = new GameBorder(640f, 480f);
@@ -52,16 +54,20 @@ public class PlayingState extends BasicGameState {
         graphics.fill(paddleRight);
         border = new GameBorder(640f, 480f);
 
+        graphics.fill(ball);
+
         input = gameContainer.getInput();
 
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
+        //TODO move it to constants
         int speed = 100;
         Input input=gameContainer.getInput();
 
-        float distance = speed * delta / 1000f;
+        float seconds = delta / 1000f;
+        float distance = speed * seconds;
         if (input.isKeyDown(Keyboard.KEY_DOWN) && !border.intersectLower(paddleRight)) {
             movePaddleDown(distance, paddleRight);
         }
@@ -73,6 +79,30 @@ public class PlayingState extends BasicGameState {
         }
         if (input.isKeyDown(Keyboard.KEY_W) && !border.intersectUpper(paddleLeft)) {
             movePaddleUp(distance, paddleLeft);
+        }
+
+        if (!border.intersectLower(ball)) {
+            ball.translate(seconds);
+        } else {
+            ball.bounce(new Vector2f(0, -1), border.getUpperBound());
+        }
+
+        if (!border.intersectUpper(ball)) {
+            ball.translate(seconds);
+        } else {
+            ball.bounce(new Vector2f(0, 1), border.getLowerBound());
+        }
+
+        if (!paddleLeft.intersects(ball)) {
+            ball.translate(seconds);
+        } else {
+            ball.bounce(new Vector2f(1,0), paddleLeft);
+        }
+
+        if (!paddleRight.intersects(ball)) {
+            ball.translate(seconds);
+        } else {
+            ball.bounce(new Vector2f(-1,0), paddleRight);
         }
     }
 

@@ -21,6 +21,13 @@ public class GameBorder{
         leftBound = new Line(new Vector2f(0,0), new Vector2f(0, 480));
     }
 
+    public Vector2f getLowerNormal() {
+        return new Vector2f((lowerBound.getNormal(0))[0], (lowerBound.getNormal(0))[1]);
+    }
+    public Vector2f getUpperNormal() {
+        return new Vector2f((upperBound.getNormal(0))[0], (upperBound.getNormal(0))[1]);
+    }
+
     public boolean intersectUpper(Shape shape){
 
         return upperBound.intersects(shape);
@@ -39,5 +46,13 @@ public class GameBorder{
     public boolean intersectLeft(Shape shape){
 
         return leftBound.intersects(shape);
+    }
+
+    public Line getUpperBound() {
+        return upperBound;
+    }
+
+    public Line getLowerBound() {
+        return lowerBound;
     }
 }
