@@ -14,11 +14,13 @@ import java.util.logging.Logger;
  */
 public class App extends StateBasedGame
 {
+
+    Ball ball;
+
     public App(String gamename)
     {
         super(gamename);
     }
-
 
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
