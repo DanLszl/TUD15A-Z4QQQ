@@ -63,7 +63,6 @@ public class PlayingState extends BasicGameState {
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         graphics.fill(paddleLeft);
         graphics.fill(paddleRight);
-        border = new GameBorder(640f, 480f);
 
         graphics.fill(ball);
 
@@ -80,11 +79,13 @@ public class PlayingState extends BasicGameState {
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
         //TODO move it to constants
-        int speed = 100;
+        int speed = 500;
         Input input=gameContainer.getInput();
 
         float seconds = delta / 1000f;
         float distance = speed * seconds;
+
+        //check if keys are pressed
         if (input.isKeyDown(Keyboard.KEY_DOWN) && !border.intersectLower(paddleRight)) {
             movePaddleDown(distance, paddleRight);
         }
@@ -97,8 +98,10 @@ public class PlayingState extends BasicGameState {
         if (input.isKeyDown(Keyboard.KEY_W) && !border.intersectUpper(paddleLeft)) {
             movePaddleUp(distance, paddleLeft);
         }
-      
-      
+
+
+
+        //collision detection
         if (!border.intersectLower(ball)) {
             ball.translate(seconds);
         } else {
@@ -121,15 +124,32 @@ public class PlayingState extends BasicGameState {
             ball.translate(seconds);
         } else {
             ball.bounce(new Vector2f(-1,0), paddleRight);
-        }        
+        }
 
-        //check if a player already one, TODO: pass player that one to gameoverscreen
+        if(border.intersectLeft(ball)){
+            paddleRight.incScore();
+            ball.setCenterX(Constants.SCREEN_WIDTH/2);
+            ball.setCenterY(Constants.SCREEN_HEIGHT/2);
+        }
+
+        if(border.intersectRight(ball)){
+            paddleLeft.incScore();
+            ball.setCenterX(Constants.SCREEN_WIDTH/2);
+            ball.setCenterY(Constants.SCREEN_HEIGHT/2);
+        }
+
+
+        //check if a player already one
         if(paddleLeft.getScore()>=WINS_NEEDED){
             stateBasedGame.enterState(GameOverState.ID);
+            paddleLeft.resetScore();
+            paddleRight.resetScore();
         }
 
         if(paddleRight.getScore()>=WINS_NEEDED){
             stateBasedGame.enterState(GameOverState.ID);
+            paddleLeft.resetScore();
+            paddleRight.resetScore();
         }
 
     }

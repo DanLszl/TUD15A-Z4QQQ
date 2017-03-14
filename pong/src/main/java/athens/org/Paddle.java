@@ -7,11 +7,12 @@ import org.newdawn.slick.geom.RoundedRectangle;
  */
 public class Paddle extends RoundedRectangle {
 
-    private int score=0;
+    private int score;
 
 
     public Paddle(float x) {
         super(x, 100, 20, 60, 8);
+        score=0;
     }
 
     public int getScore(){
@@ -20,5 +21,9 @@ public class Paddle extends RoundedRectangle {
 
     public void incScore(){
         score++;
+    }
+
+    public void resetScore(){
+        score=0;
     }
 }

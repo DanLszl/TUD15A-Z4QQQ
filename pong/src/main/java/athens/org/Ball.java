@@ -26,7 +26,9 @@ public class Ball extends Circle {
     }
 
     public void bounce(Vector2f normal, Shape shape) {
+
         if (lastHit == null || !lastHit.equals(shape)) {
+
             if (normal.x != 0) {
                 speed.set(-speed.getX(), speed.getY());
             }
@@ -53,12 +55,12 @@ public class Ball extends Circle {
 
         int angle;
         if (direction == LEFT) {
-            angle = randomGenerator.nextInt(180) - 90 + 180;
+            angle = randomGenerator.nextInt(120) - 60;
         } else {
-            angle = randomGenerator.nextInt(180) - 90;
+            angle = randomGenerator.nextInt(120) + 120;
         }
         // TODO delete this
-        angle = 90;
+
         speed = new Vector2f((float) Math.cos(Math.toRadians(angle)) * speedLength, (float) Math.sin(Math.toRadians(angle)) * speedLength);
     }
 }
