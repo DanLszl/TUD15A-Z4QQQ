@@ -1,17 +1,13 @@
 package athens.org;
 
-import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.RoundedRectangle;
 
 /**
  * Created by Dani on 3/14/2017.
  */
-public class Paddle extends Rectangle {
+public class Paddle extends RoundedRectangle {
 
-    // TODO left-right
-    private double centerPosition;
-
-    Paddle(double centerPosition) {
-        super(50, 100, 20, 60);
-        this.centerPosition = centerPosition;
+    public Paddle(float x) {
+        super(x, 100, 20, 60, 8);
     }
 }

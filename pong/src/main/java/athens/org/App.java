@@ -1,77 +1,36 @@
 package athens.org;
 
+import athens.org.states.PlayingState;
 import org.lwjgl.input.Keyboard;
+import athens.org.states.WelcomeState;
 import org.newdawn.slick.*;
+import org.newdawn.slick.state.StateBasedGame;
 
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * App
  */
-public class App extends BasicGame {
-    private Paddle paddleLeft;
-    private GameBorder border;
-    private Input input;
-
-    private App(String gamename) {
+public class App extends StateBasedGame
+{
+    public App(String gamename)
+    {
         super(gamename);
     }
 
-
-    @Override
-    public void init(GameContainer gc) throws SlickException {
-        paddleLeft = new Paddle(0.5);
-        //TODO change hardcoded screen size
-        border = new GameBorder(640f, 480f);
-
-        input = gc.getInput();
+    public void initStatesList(GameContainer gameContainer) throws SlickException {
+        this.addState(new WelcomeState());
+        this.addState(new PlayingState());
     }
 
-    @Override
-    public void update(GameContainer gc, int delta) throws SlickException {
-        int speed = 100;
-        float distance = speed * delta / 1000f;
-        if (input.isKeyDown(Keyboard.KEY_UP) & !border.intersectUpper(paddleLeft)) {
-                moveLeftPaddleUp(distance);
-        }
-
-        if (input.isKeyDown(Keyboard.KEY_DOWN) & !border.intersectLower(paddleLeft)) {
-            moveLeftPaddleDown(distance);
-        }
-    }
-
-
-    private void moveRightPaddleDown() {
-        // TODO TO BE IMPLEMENTED
-    }
-
-    private void moveRightPaddleUp() {
-        // TODO TO BE IMPLEMENTED
-    }
-
-    private void moveLeftPaddleDown(float distance) {
-        paddleLeft.setCenterY(paddleLeft.getCenterY() + distance);
-    }
-
-    private void moveLeftPaddleUp(float distance) {
-        paddleLeft.setCenterY(paddleLeft.getCenterY() - distance);
-    }
-
-    @Override
-    public void render(GameContainer gc, Graphics g) throws SlickException {
-        // TODO Write score on the screen
-        g.draw(paddleLeft);
-    }
-
-    public static void main(String[] args) {
-        try {
-            AppGameContainer appgc;
-            appgc = new AppGameContainer(new App("Simple Slick Game"));
-            appgc.setDisplayMode(640, 480, false);
-            appgc.start();
-        } catch (SlickException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static void main(String[] args) throws SlickException
+    {
+        AppGameContainer appgc=new AppGameContainer(new App("PONG"));
+        appgc.setDisplayMode(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
+        appgc.setShowFPS(false);
+        appgc.setForceExit(false);
+        appgc.start();
     }
 }
