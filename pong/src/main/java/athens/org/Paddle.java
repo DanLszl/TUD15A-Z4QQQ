@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.RoundedRectangle;
  */
 public class Paddle extends RoundedRectangle {
 
-    Paddle(float x) {
+    public Paddle(float x) {
         super(x, 100, 20, 60, 8);
     }
 }
