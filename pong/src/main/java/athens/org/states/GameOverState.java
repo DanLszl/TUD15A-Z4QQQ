@@ -1,6 +1,7 @@
 package athens.org.states;
 
 import athens.org.Constants;
+import athens.org.ScoreBoard;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
@@ -13,6 +14,8 @@ import java.awt.Font;
  * Created by peter on 14.03.17.
  */
 public class GameOverState extends BasicGameState {
+
+    private static GameOverState instance=new GameOverState();
 
     public static final int ID=2;
 
@@ -31,6 +34,15 @@ public class GameOverState extends BasicGameState {
     private Font myFont3;
     private TrueTypeFont font3;
 
+
+
+    private GameOverState(){};
+
+    public static GameOverState getInstance(){
+        return instance;
+    }
+
+
     @Override
     public int getID() {
         return ID;
@@ -38,8 +50,6 @@ public class GameOverState extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        int winner=1; //TODO: change to real winner
-
         myFont= new Font("Verdana", Font.BOLD, 60);
         font=new TrueTypeFont(myFont, false);
 
@@ -50,10 +60,8 @@ public class GameOverState extends BasicGameState {
         font3=new TrueTypeFont(myFont3, false);
 
         gameOverText="GAME OVER";
-        winnerText="PLAYER "+winner+" WON";
         informationText="Press <ENTER> to restart or <ESC> to exit";
         textWidth=font.getWidth(gameOverText);
-        textWidth2=font2.getWidth(winnerText);
         textWidth3=font3.getWidth(informationText);
     }
 
@@ -70,6 +78,7 @@ public class GameOverState extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+
         if(gameContainer.getInput().isKeyDown(Input.KEY_ESCAPE)){
             gameContainer.exit();
         }
@@ -77,5 +86,15 @@ public class GameOverState extends BasicGameState {
         if(gameContainer.getInput().isKeyPressed(Input.KEY_ENTER)){
             stateBasedGame.enterState(WelcomeState.ID);
         }
+    }
+
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+
+        String winner= ScoreBoard.getInstance().getWinner();
+        winnerText=winner+" WON";
+        textWidth2=font2.getWidth(winnerText);
+
     }
 }
