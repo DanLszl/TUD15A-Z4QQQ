@@ -1,6 +1,7 @@
 package athens.org;
 
 import athens.org.states.PlayingState;
+import org.lwjgl.input.Keyboard;
 import athens.org.states.WelcomeState;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
@@ -10,8 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Hello world!
- *
+ * App
  */
 public class App extends StateBasedGame
 {
@@ -20,14 +20,11 @@ public class App extends StateBasedGame
         super(gamename);
     }
 
-
-
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new WelcomeState());
         this.addState(new PlayingState());
     }
-
 
     public static void main(String[] args) throws SlickException
     {
@@ -36,6 +33,5 @@ public class App extends StateBasedGame
         appgc.setShowFPS(false);
         appgc.setForceExit(false);
         appgc.start();
-
     }
 }
