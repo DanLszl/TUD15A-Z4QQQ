@@ -20,7 +20,6 @@ public class App extends StateBasedGame
         super(gamename);
     }
 
-    @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         this.addState(new WelcomeState());
         this.addState(new PlayingState());
