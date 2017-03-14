@@ -1,6 +1,7 @@
 package athens.org.states;
 
 import athens.org.Ball;
+import athens.org.GameBorder;
 import athens.org.Paddle;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
@@ -20,8 +21,10 @@ public class PlayingState extends BasicGameState {
     private Paddle paddleLeft;
     private Paddle paddleRight;
 
-    Ball ball;
+    private GameBorder border;
+    private Input input;
 
+    Ball ball;
 
     public PlayingState(){
         super();
@@ -36,12 +39,21 @@ public class PlayingState extends BasicGameState {
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         paddleLeft = new Paddle(50f);
         paddleRight = new Paddle(590f);
+
+        //TODO change hardcoded screen size
+        border = new GameBorder(640f, 480f);
+
+        input = gameContainer.getInput();
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         graphics.fill(paddleLeft);
         graphics.fill(paddleRight);
+        border = new GameBorder(640f, 480f);
+
+        input = gameContainer.getInput();
+
     }
 
     @Override
@@ -50,16 +62,16 @@ public class PlayingState extends BasicGameState {
         Input input=gameContainer.getInput();
 
         float distance = speed * delta / 1000f;
-        if (input.isKeyDown(Keyboard.KEY_UP)) {
-            movePaddleUp(distance, paddleRight);
-        }
-        if (input.isKeyDown(Keyboard.KEY_DOWN)) {
+        if (input.isKeyDown(Keyboard.KEY_DOWN) && !border.intersectLower(paddleRight)) {
             movePaddleDown(distance, paddleRight);
         }
-        if(input.isKeyDown(Keyboard.KEY_S)){
+        if (input.isKeyDown(Keyboard.KEY_UP) && !border.intersectUpper(paddleRight)) {
+            movePaddleUp(distance, paddleRight);
+        }
+        if (input.isKeyDown(Keyboard.KEY_S) && !border.intersectLower(paddleLeft)) {
             movePaddleDown(distance, paddleLeft);
         }
-        if(input.isKeyDown(Keyboard.KEY_W)){
+        if (input.isKeyDown(Keyboard.KEY_W) && !border.intersectUpper(paddleLeft)) {
             movePaddleUp(distance, paddleLeft);
         }
     }
