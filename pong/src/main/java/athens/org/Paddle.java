@@ -7,11 +7,7 @@ import org.newdawn.slick.geom.Rectangle;
  */
 public class Paddle extends Rectangle {
 
-    // TODO left-right
-    private double centerPosition;
-
-    Paddle(double centerPosition) {
-        super(50, 100, 20, 60);
-        this.centerPosition = centerPosition;
+    Paddle(float x) {
+        super(x, 100, 20, 60);
     }
 }

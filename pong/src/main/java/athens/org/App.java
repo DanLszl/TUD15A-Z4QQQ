@@ -11,6 +11,7 @@ import java.util.logging.Logger;
  */
 public class App extends BasicGame {
     private Paddle paddleLeft;
+    private Paddle paddleRight;
 
     private Input input;
 
@@ -21,7 +22,8 @@ public class App extends BasicGame {
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        paddleLeft = new Paddle(0.5);
+        paddleLeft = new Paddle(50f);
+        paddleRight = new Paddle(590f);
 
         input = gc.getInput();
     }
@@ -31,34 +33,32 @@ public class App extends BasicGame {
         int speed = 100;
         float distance = speed * delta / 1000f;
         if (input.isKeyDown(Keyboard.KEY_UP)) {
-            moveLeftPaddleUp(distance);
+            movePaddleUp(distance, paddleRight);
         }
         if (input.isKeyDown(Keyboard.KEY_DOWN)) {
-            moveLeftPaddleDown(distance);
+            movePaddleDown(distance, paddleRight);
+        }
+        if(input.isKeyDown(Keyboard.KEY_S)){
+            movePaddleDown(distance, paddleLeft);
+        }
+        if(input.isKeyDown(Keyboard.KEY_W)){
+            movePaddleUp(distance, paddleLeft);
         }
     }
 
-
-    private void moveRightPaddleDown() {
-        // TODO TO BE IMPLEMENTED
+    private void movePaddleDown(float distance, Paddle paddle) {
+        paddle.setCenterY(paddle.getCenterY() + distance);
     }
 
-    private void moveRightPaddleUp() {
-        // TODO TO BE IMPLEMENTED
-    }
-
-    private void moveLeftPaddleDown(float distance) {
-        paddleLeft.setCenterY(paddleLeft.getCenterY() + distance);
-    }
-
-    private void moveLeftPaddleUp(float distance) {
-        paddleLeft.setCenterY(paddleLeft.getCenterY() - distance);
+    private void movePaddleUp(float distance, Paddle paddle) {
+        paddle.setCenterY(paddle.getCenterY() - distance);
     }
 
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
         // TODO Write score on the screen
         g.draw(paddleLeft);
+        g.draw(paddleRight);
     }
 
     public static void main(String[] args) {
