@@ -13,11 +13,17 @@ import static athens.org.Ball.DIRECTION.LEFT;
  */
 public class Ball extends Circle {
 
+    private static final int speedLength = 100;
+    private static final int radius = 20;
+    private static Random randomGenerator = new Random();
+    private int bounceCounter=0;
     private Shape lastHit;
-    public int bounceCounter=0;
+    private Vector2f speed;
 
-    public Vector2f getSpeed() {
-        return speed;
+    public Ball(float centerPointX, float centerPointY, DIRECTION direction) {
+        super(centerPointX, centerPointY, radius);
+
+        resetSpeed(direction);
     }
 
     public void translate(float seconds) {
@@ -46,26 +52,6 @@ public class Ball extends Circle {
         }
     }
 
-    public enum DIRECTION {
-        LEFT, RIGHT
-    }
-
-    private static final int speedLength = 100;
-    private static final int radius = 20;
-    private static Random randomGenerator = new Random();
-
-    private Vector2f speed;
-
-    public void increaseSpeed(){
-        speed=speed.scale(1.20f);
-    }
-
-    public Ball(float centerPointX, float centerPointY, DIRECTION direction) {
-        super(centerPointX, centerPointY, radius);
-
-        resetSpeed(direction);
-    }
-
     public void setBallToCenter(){
         this.setCenterX(Constants.SCREEN_WIDTH/2);
         this.setCenterY(Constants.SCREEN_HEIGHT/2);
@@ -73,6 +59,9 @@ public class Ball extends Circle {
 
     public void resetSpeed(DIRECTION direction){
         int angle;
+
+
+        lastHit = null;
         if (direction == LEFT) {
             angle = randomGenerator.nextInt(120) - 60;
         } else {
@@ -80,5 +69,13 @@ public class Ball extends Circle {
         }
 
         speed = new Vector2f((float) Math.cos(Math.toRadians(angle)) * speedLength, (float) Math.sin(Math.toRadians(angle)) * speedLength);
+    }
+
+    private void increaseSpeed(){
+        speed=speed.scale(1.20f);
+    }
+
+    public enum DIRECTION {
+        LEFT, RIGHT
     }
 }
