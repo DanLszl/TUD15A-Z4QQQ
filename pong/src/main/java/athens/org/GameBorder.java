@@ -15,38 +15,23 @@ public class GameBorder{
     private Line leftBound;
 
     public GameBorder(float width, float height){
-        upperBound = new Line(new Vector2f(0,0), new Vector2f(640, 0));
-        lowerBound = new Line(new Vector2f(0,480), new Vector2f(640, 480));
-        rightBound = new Line(new Vector2f(640, 0), new Vector2f(640, 480));
-        leftBound = new Line(new Vector2f(0,0), new Vector2f(0, 480));
+        upperBound = new Line(new Vector2f(0,0),        new Vector2f(width, 0));
+        lowerBound = new Line(new Vector2f(0,height),   new Vector2f(width, height));
+        rightBound = new Line(new Vector2f(width, 0),   new Vector2f(width, height));
+        leftBound =  new Line(new Vector2f(0,0),        new Vector2f(0, 480));
     }
 
-    public Vector2f getLowerNormal() {
-        return new Vector2f((lowerBound.getNormal(0))[0], (lowerBound.getNormal(0))[1]);
-    }
-    public Vector2f getUpperNormal() {
-        return new Vector2f((upperBound.getNormal(0))[0], (upperBound.getNormal(0))[1]);
-    }
-
-    public boolean intersectUpper(Shape shape){
-
-        return upperBound.intersects(shape);
-    }
-
-    public boolean intersectLower(Shape shape){
-
-        return lowerBound.intersects(shape);
+    public boolean intersect(Shape shape, BorderType border)
+    {
+        switch (border){
+            case Upper: return upperBound.intersects(shape);
+            case Lower: return lowerBound.intersects(shape);
+            case Right: return rightBound.intersects(shape);
+            case Left:  return leftBound.intersects(shape);
+            default:    return false;
+        }
     }
 
-    public boolean intersectRight(Shape shape) {
-
-        return rightBound.intersects(shape);
-    }
-
-    public boolean intersectLeft(Shape shape){
-
-        return leftBound.intersects(shape);
-    }
 
     public Line getUpperBound() {
         return upperBound;
@@ -55,4 +40,10 @@ public class GameBorder{
     public Line getLowerBound() {
         return lowerBound;
     }
+
+
+    public enum BorderType{
+        Upper, Lower, Right, Left
+    }
 }
+

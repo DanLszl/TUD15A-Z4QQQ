@@ -10,12 +10,13 @@ public class ScoreBoard {
     private int player1Score;
     private int player2Score;
 
-    public static ScoreBoard getInstance() {
-        return scoreBoard;
-    }
     private ScoreBoard() {
         player1Score = 0;
         player2Score = 0;
+    }
+
+    public static ScoreBoard getInstance() {
+        return scoreBoard;
     }
 
     public void resetScores() {
@@ -32,15 +33,11 @@ public class ScoreBoard {
     }
 
     public boolean isWinner() {
-        if (player1Score >= GOALS_TO_WIN || player2Score >= GOALS_TO_WIN ) {
-            return true;
-        } else {
-            return false;
-        }
+        return player1Score >= GOALS_TO_WIN || player2Score >= GOALS_TO_WIN;
     }
 
-    public String getWinner(){
-        if(player1Score>=5){
+    public String getWinner() {
+        if (player1Score >= 5) {
             return "Player 1";
         }
 
@@ -48,8 +45,9 @@ public class ScoreBoard {
 
     }
 
-    public String getScoreBoard(){
-        return player1Score+" : "+player2Score;
+    @Override
+    public String toString() {
+        return player1Score + " : " + player2Score;
     }
 
 }
