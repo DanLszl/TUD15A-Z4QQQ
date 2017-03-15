@@ -14,6 +14,7 @@ import static athens.org.Ball.DIRECTION.LEFT;
 public class Ball extends Circle {
 
     private Shape lastHit;
+    public int bounceCounter=0;
 
     public Vector2f getSpeed() {
         return speed;
@@ -36,8 +37,13 @@ public class Ball extends Circle {
                 speed.set(speed.getX(), -speed.getY());
             }
             lastHit = shape;
-        }
+            bounceCounter++;
 
+            if(bounceCounter%20==0){
+                this.increaseSpeed();
+            }
+
+        }
     }
 
     public enum DIRECTION {
@@ -49,6 +55,10 @@ public class Ball extends Circle {
     private static Random randomGenerator = new Random();
 
     private Vector2f speed;
+
+    public void increaseSpeed(){
+        speed=speed.scale(1.20f);
+    }
 
     public Ball(float centerPointX, float centerPointY, DIRECTION direction) {
         super(centerPointX, centerPointY, radius);
@@ -62,5 +72,10 @@ public class Ball extends Circle {
         // TODO delete this
 
         speed = new Vector2f((float) Math.cos(Math.toRadians(angle)) * speedLength, (float) Math.sin(Math.toRadians(angle)) * speedLength);
+    }
+
+    public void setBallToCenter(){
+        this.setCenterX(Constants.SCREEN_WIDTH/2);
+        this.setCenterY(Constants.SCREEN_HEIGHT/2);
     }
 }

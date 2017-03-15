@@ -1,9 +1,6 @@
 package athens.org.states;
 
-import athens.org.Ball;
-import athens.org.Constants;
-import athens.org.GameBorder;
-import athens.org.Paddle;
+import athens.org.*;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
@@ -13,7 +10,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import java.awt.*;
 import java.awt.Font;
 
 /**
@@ -21,23 +17,30 @@ import java.awt.Font;
  */
 public class PlayingState extends BasicGameState {
 
+    private static PlayingState instance=new PlayingState();
+
     public static final int ID=1;
-    private static final int WINS_NEEDED=5;
 
     private Paddle paddleLeft;
     private Paddle paddleRight;
 
     private GameBorder border;
-    private Input input;
 
     private Font myFont2;
     private TrueTypeFont font2;
 
+    private ScoreBoard scoreBoard;
+
     Ball ball;
 
-    public PlayingState(){
+    private PlayingState(){
         super();
     }
+
+    public static PlayingState getInstance(){
+        return instance;
+    }
+
 
     @Override
     public int getID() {
@@ -53,10 +56,9 @@ public class PlayingState extends BasicGameState {
         //TODO change hardcoded screen size
         border = new GameBorder(640f, 480f);
 
-        input = gameContainer.getInput();
-
         myFont2= new Font("Verdana", Font.BOLD, 30);
         font2=new TrueTypeFont(myFont2, false);
+        scoreBoard = ScoreBoard.getInstance();
     }
 
     @Override
@@ -65,11 +67,8 @@ public class PlayingState extends BasicGameState {
         graphics.fill(paddleRight);
 
         graphics.fill(ball);
-
-        input = gameContainer.getInput();
-
-        //render scoreboard centered
-        String scoreBoard=paddleLeft.getScore()+" : " +paddleRight.getScore();
+                //render scoreboard centered
+        String scoreBoard=this.scoreBoard.getScoreBoard();
         int scoreBoardWidth=font2.getWidth(scoreBoard);
         graphics.setFont(font2);
         graphics.drawString(scoreBoard, (Constants.SCREEN_WIDTH-scoreBoardWidth)/2,20);
@@ -78,7 +77,6 @@ public class PlayingState extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
-        //TODO move it to constants
         int speed = 500;
         Input input=gameContainer.getInput();
 
@@ -124,34 +122,24 @@ public class PlayingState extends BasicGameState {
             ball.translate(seconds);
         } else {
             ball.bounce(new Vector2f(-1,0), paddleRight);
+
         }
 
         if(border.intersectLeft(ball)){
-            paddleRight.incScore();
-            ball.setCenterX(Constants.SCREEN_WIDTH/2);
-            ball.setCenterY(Constants.SCREEN_HEIGHT/2);
+            scoreBoard.incRightScore();
+            ball.setBallToCenter();
         }
 
         if(border.intersectRight(ball)){
-            paddleLeft.incScore();
-            ball.setCenterX(Constants.SCREEN_WIDTH/2);
-            ball.setCenterY(Constants.SCREEN_HEIGHT/2);
+            scoreBoard.incLeftScore();
+            ball.setBallToCenter();
         }
 
 
         //check if a player already one
-        if(paddleLeft.getScore()>=WINS_NEEDED){
+        if (scoreBoard.isWinner()) {
             stateBasedGame.enterState(GameOverState.ID);
-            paddleLeft.resetScore();
-            paddleRight.resetScore();
         }
-
-        if(paddleRight.getScore()>=WINS_NEEDED){
-            stateBasedGame.enterState(GameOverState.ID);
-            paddleLeft.resetScore();
-            paddleRight.resetScore();
-        }
-
     }
 
     private void movePaddleDown(float distance, Paddle paddle) {
@@ -161,4 +149,12 @@ public class PlayingState extends BasicGameState {
     private void movePaddleUp(float distance, Paddle paddle) {
         paddle.setCenterY(paddle.getCenterY() - distance);
     }
+
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+
+        scoreBoard.resetScores();
+    }
+
 }

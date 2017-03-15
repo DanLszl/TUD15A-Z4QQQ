@@ -12,8 +12,11 @@ import java.awt.Font;
  * Created by peter on 14.03.17.
  */
 public class WelcomeState extends BasicGameState {
-
     public static final int ID = 0;
+
+
+    private static WelcomeState instance=new WelcomeState();
+
     private String welcomeText;
     private String informationText;
     private float textWidth;
@@ -24,8 +27,12 @@ public class WelcomeState extends BasicGameState {
     private Font myFont2;
     private TrueTypeFont font2;
 
-    public WelcomeState(){
+    private WelcomeState(){
         super();
+    }
+
+    public static WelcomeState getInstance(){
+        return instance;
     }
 
     @Override
