@@ -63,19 +63,22 @@ public class Ball extends Circle {
     public Ball(float centerPointX, float centerPointY, DIRECTION direction) {
         super(centerPointX, centerPointY, radius);
 
+        resetSpeed(direction);
+    }
+
+    public void setBallToCenter(){
+        this.setCenterX(Constants.SCREEN_WIDTH/2);
+        this.setCenterY(Constants.SCREEN_HEIGHT/2);
+    }
+
+    public void resetSpeed(DIRECTION direction){
         int angle;
         if (direction == LEFT) {
             angle = randomGenerator.nextInt(120) - 60;
         } else {
             angle = randomGenerator.nextInt(120) + 120;
         }
-        // TODO delete this
 
         speed = new Vector2f((float) Math.cos(Math.toRadians(angle)) * speedLength, (float) Math.sin(Math.toRadians(angle)) * speedLength);
-    }
-
-    public void setBallToCenter(){
-        this.setCenterX(Constants.SCREEN_WIDTH/2);
-        this.setCenterY(Constants.SCREEN_HEIGHT/2);
     }
 }
