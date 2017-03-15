@@ -20,7 +20,7 @@ import static athens.org.GameBorder.BorderType.*;
 /**
  * Created by peter on 14.03.17.
  */
-public class PlayingState extends BasicGameState {
+public class PlayingState extends BasicGameState implements Observer {
 
     private static PlayingState instance = new PlayingState();
 
@@ -37,6 +37,8 @@ public class PlayingState extends BasicGameState {
     private ScoreBoard scoreBoard;
 
     private Ball ball;
+
+    private String scores;
 
     private PlayingState() {
         super();
@@ -62,6 +64,10 @@ public class PlayingState extends BasicGameState {
         myFont2 = new Font("Verdana", Font.BOLD, 30);
         font2 = new TrueTypeFont(myFont2, false);
         scoreBoard = ScoreBoard.getInstance();
+        scoreBoard.registerObserver(this);
+
+
+        scores="0 : 0";
     }
 
     @Override
@@ -71,11 +77,9 @@ public class PlayingState extends BasicGameState {
 
         graphics.fill(ball);
         //render scoreboard centered
-        String scores = scoreBoard.toString();
         int scoreBoardWidth = font2.getWidth(scores);
         graphics.setFont(font2);
         graphics.drawString(scores, (SCREEN_WIDTH - scoreBoardWidth) / 2, 20);
-
     }
 
     @Override
@@ -164,4 +168,8 @@ public class PlayingState extends BasicGameState {
         ball.resetSpeed(Ball.DIRECTION.LEFT);
     }
 
+    @Override
+    public void updateScore(Subject subject) {
+        scores=subject.getScores();
+    }
 }
