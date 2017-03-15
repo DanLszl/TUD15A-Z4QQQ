@@ -31,7 +31,7 @@ public class PlayingState extends BasicGameState {
 
     private ScoreBoard scoreBoard;
 
-    Ball ball;
+    private Ball ball;
 
     private PlayingState(){
         super();
@@ -125,14 +125,19 @@ public class PlayingState extends BasicGameState {
 
         }
 
+
+        //goal of right player
         if(border.intersectLeft(ball)){
             scoreBoard.incRightScore();
             ball.setBallToCenter();
+            ball.resetSpeed(Ball.DIRECTION.LEFT);
         }
 
+        //goal of left player
         if(border.intersectRight(ball)){
             scoreBoard.incLeftScore();
             ball.setBallToCenter();
+            ball.resetSpeed(Ball.DIRECTION.RIGHT);
         }
 
 
@@ -155,6 +160,7 @@ public class PlayingState extends BasicGameState {
         super.enter(container, game);
 
         scoreBoard.resetScores();
+        ball.resetSpeed(Ball.DIRECTION.LEFT);
     }
 
 }
