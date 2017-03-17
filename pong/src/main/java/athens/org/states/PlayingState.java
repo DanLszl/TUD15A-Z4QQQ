@@ -11,11 +11,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import java.awt.Font;
+import java.util.Iterator;
 
 import static athens.org.Constants.SCREEN_HEIGHT;
 import static athens.org.Constants.SCREEN_WIDTH;
 import static athens.org.Constants.SPEED;
-import static athens.org.GameBorder.BorderType.*;
 
 /**
  * Created by peter on 14.03.17.
@@ -85,62 +85,35 @@ public class PlayingState extends BasicGameState {
         float seconds = delta / 1000f;
         float distance = SPEED * seconds;
 
+
         //check if keys are pressed
-        if (input.isKeyDown(Keyboard.KEY_DOWN) && !border.intersect(paddleRight, Lower)) {
+        if (input.isKeyDown(Keyboard.KEY_DOWN) && !border.getLowBorder().intersect(paddleRight)) {
             movePaddleDown(distance, paddleRight);
         }
-        if (input.isKeyDown(Keyboard.KEY_UP) && !border.intersect(paddleRight, Upper)) {
+        if (input.isKeyDown(Keyboard.KEY_UP) && !border.getUpperBorder().intersect(paddleRight)) {
             movePaddleUp(distance, paddleRight);
         }
-        if (input.isKeyDown(Keyboard.KEY_S) && !border.intersect(paddleLeft, Lower)) {
+        if (input.isKeyDown(Keyboard.KEY_S) && !border.getLowBorder().intersect(paddleLeft)) {
             movePaddleDown(distance, paddleLeft);
         }
-        if (input.isKeyDown(Keyboard.KEY_W) && !border.intersect(paddleLeft, Upper)) {
+        if (input.isKeyDown(Keyboard.KEY_W) && !border.getUpperBorder().intersect(paddleLeft)) {
             movePaddleUp(distance, paddleLeft);
         }
 
-
-        //collision detection
-        if (!border.intersect(ball, Lower)) {
-            ball.translate(seconds);
-        } else {
-            ball.bounce(new Vector2f(0, -1), border.getUpperBound());
-        }
-
-        if (!border.intersect(ball, Upper)) {
-            ball.translate(seconds);
-        } else {
-            ball.bounce(new Vector2f(0, 1), border.getLowerBound());
-        }
-
-        if (!paddleLeft.intersects(ball)) {
-            ball.translate(seconds);
-        } else {
+        if (paddleLeft.intersects(ball)) {
             ball.bounce(new Vector2f(1, 0), paddleLeft);
         }
 
-        if (!paddleRight.intersects(ball)) {
-            ball.translate(seconds);
-        } else {
+        if (paddleRight.intersects(ball)) {
             ball.bounce(new Vector2f(-1, 0), paddleRight);
-
         }
 
 
-        //goal of right player
-        if (border.intersect(ball, Left)) {
-            scoreBoard.incRightScore();
-            ball.setBallToCenter();
-            ball.resetSpeed(Ball.DIRECTION.LEFT);
+        for (Iterator<Interactable> iter = border.getIterator(); iter.hasNext(); ) {
+            iter.next().interact(ball);
         }
 
-        //goal of left player
-        if (border.intersect(ball, Right)) {
-            scoreBoard.incLeftScore();
-            ball.setBallToCenter();
-            ball.resetSpeed(Ball.DIRECTION.RIGHT);
-        }
-
+        ball.translate(seconds);
 
         //check if a player already one
         if (scoreBoard.isWinner()) {

@@ -13,7 +13,7 @@ import static athens.org.Ball.DIRECTION.LEFT;
  */
 public class Ball extends Circle {
 
-    private static final int speedLength = 100;
+    private static final int speedLength = 400;
     private static final int radius = 20;
     private static Random randomGenerator = new Random();
     private int bounceCounter=0;
