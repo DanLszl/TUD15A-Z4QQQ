@@ -21,7 +21,7 @@ public class RightGoalElement extends Line implements Interactable {
 
         if(ball.intersects(this)) {
             ball.setBallToCenter();
-            ball.resetSpeed(Ball.DIRECTION.RIGHT);
+            ball.resetSpeed(Ball.DIRECTION.LEFT);
             ScoreBoard.getInstance().incLeftScore();
         }
     }
